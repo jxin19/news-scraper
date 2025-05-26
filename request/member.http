@@ -1,0 +1,49 @@
+### 환경 변수 설정
+@host = http://localhost:8080
+@contentType = application/json
+@accessToken = eyJhbGciOiJIUzM4NCJ9.eyJtZW1iZXJJZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3NDc4MjU5ODMsImV4cCI6MTc0NzgyNjI4M30.4imbhmfFmEKULd6jeSG-PgMzWzs2npGkMXlGHq8apNomaNF8owyiXAmCpmrnKlsR
+@refreshToken = eyJhbGciOiJIUzM4NCJ9.eyJtZW1iZXJJZCI6MSwidXNlcm5hbWUiOiJ0ZXN0MSIsImlhdCI6MTc0ODE3NzI2NiwiZXhwIjoxNzQ4MTgwODY2fQ._2BNbnueRFVa2Wbve1lytolFx3c4uwVsVNoky_8gtWo4pwkw2CRZj_8K0XHYoJ7W
+
+### 회원 상세 조회
+GET {{host}}/member
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 회원 가입
+POST {{host}}/member
+Content-Type: {{contentType}}
+
+{
+    "username": "testuser2",
+    "password": "Test123!@#"
+}
+
+### 회원 정보 수정
+PUT {{host}}/member
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "username": "updateduser",
+    "password": "Update456!@#"
+}
+
+### 로그인
+POST {{host}}/member/login
+Content-Type: {{contentType}}
+
+{
+    "username": "testuser1",
+    "password": "Test123!@#"
+}
+
+### 토큰 재발급
+POST {{host}}/member/refresh-token
+Content-Type: {{contentType}}
+Refresh-Token: {{refreshToken}}
+
+### 로그아웃
+POST {{host}}/member/logout
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+Refresh-Token: {{refreshToken}}

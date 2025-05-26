@@ -1,0 +1,97 @@
+spring:
+  application:
+    name: scrape-rss
+
+  main:
+    allow-bean-definition-overriding: true
+
+  # 배치 설정
+  batch:
+    job:
+      enabled: false # 애플리케이션 시작 시 자동 실행 여부
+    jdbc:
+      initialize-schema: always
+      table-prefix: SCRAPE_RSS_BATCH_
+
+  # 데이터베이스 설정
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/ddi}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:ddi2505}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        jdbc:
+          batch_size: 100
+        order_updates: true
+        order_inserts: true
+    hibernate:
+      ddl-auto: validate
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+
+  # Jackson 설정
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+    time-zone: 'Asia/Seoul'
+
+  # 레디스 설정
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+  # Kafka 설정
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    schema-registry-url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        enable.idempotence: true
+        transactional.id: scrape-web-tx-${random.uuid}
+        max.in.flight.requests.per.connection: 3
+        schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+        partitioner.class: org.apache.kafka.clients.producer.RoundRobinPartitioner
+      acks: all
+      retries: 3
+      delivery.timeout.ms: 60000 # 전송 타임아웃 (1분)
+      request.timeout.ms: 30000 # 요청 타임아웃 (30초)
+      retry.backoff.ms: 1000 # 재시도 간격 (1초)
+      batch-size: 16384  # 배치 크기 설정 (16KB)
+      linger.ms: 5
+      buffer-memory: 33554432 # 버퍼 메모리 (32MB)
+      compression-type: snappy
+    topic:
+      news: news-events
+      partitions: 3
+      replication-factor: 1
+
+redis:
+  deduplication:
+    ttl-hours: 12
+
+server:
+  port: 0
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.batch: DEBUG
+    com.ddi.scraperss: DEBUG

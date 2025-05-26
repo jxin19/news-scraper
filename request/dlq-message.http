@@ -1,0 +1,71 @@
+### 환경 변수 설정
+@host = http://localhost:8080
+@contentType = application/json
+@accessToken = eyJhbGciOiJIUzM4NCJ9.eyJtZW1iZXJJZCI6MSwiZW1haWxBZGRyZXNzIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzg2LTE4ODg3NjU0MzIxIiwiaXNWZXJpZmllZCI6ZmFsc2UsImlhdCI6MTc0NjI1NTgzMiwiZXhwIjoxNzQ2MjU2MTMyfQ.UoOi-h8fsHKgSPdFa00M0KJuHptO8TfMBEPtqMKEIuRtlwqliYYsi0dHZy11Pyei
+
+### DLQ 메시지 상세 조회
+GET {{host}}/dlq-message/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### DLQ 메시지 목록 조회 (기본)
+GET {{host}}/dlq-message
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### DLQ 메시지 목록 필터링 조회
+GET {{host}}/dlq-message?status=PENDING&key=test-key&startDate=2025-01-01T00:00:00Z&endDate=2025-05-01T00:00:00Z&page=0&size=10&sort=created_at,desc
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### DLQ 메시지 재시도
+POST {{host}}/dlq-message/1/retry
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### DLQ 메시지 삭제
+DELETE {{host}}/dlq-message/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### DLQ 메시지 일괄 처리 - 상태 변경
+POST {{host}}/dlq-message/bulk-action
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "ids": [1, 2, 3],
+    "status": "IGNORED"
+}
+
+### DLQ 메시지 일괄 처리 - 재시도
+POST {{host}}/dlq-message/bulk-action
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "ids": [1, 2, 3],
+    "retry": true
+}
+
+### DLQ 메시지 일괄 처리 - 변환 플래그 설정
+POST {{host}}/dlq-message/bulk-action
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "ids": [1, 2, 3],
+    "transformed": true
+}
+
+### DLQ 메시지 일괄 처리 - 복합 작업
+POST {{host}}/dlq-message/bulk-action
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "ids": [1, 2, 3],
+    "status": "RETRIED",
+    "transformed": true,
+    "retry": true
+}

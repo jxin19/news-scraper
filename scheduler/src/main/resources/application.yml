@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: scheduler
+
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/ddi}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:ddi2505}
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 0

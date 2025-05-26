@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: stream-news
+
+  # 데이터베이스 설정
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ddi}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:ddi2505}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        jdbc:
+          batch_size: 100
+        order_updates: true
+        order_inserts: true
+    hibernate:
+      ddl-auto: validate
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+
+  # Jackson 설정
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+    time-zone: 'Asia/Seoul'
+
+  # Kafka 설정
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    schema-registry-url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+    consumer:
+      group-id: stream-news
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      max-poll-records: 500
+      fetch-max-wait-ms: 500
+      fetch-min-bytes: 1024
+      properties:
+        specific.avro.reader: true
+        schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+      enable-auto-commit: false # 자동커밋 여부
+    dlq-consumer:
+      group-id: stream-news-dlq
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    topic:
+      news: news-events
+      news-dlq: news-events.dlq
+    retry:
+      enabled: true
+      max-attempts: 3
+      initial-interval: 5000
+      max-interval: 10000
+      multiplier: 2.0
+
+server:
+  port: 0
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.kafka: INFO
+    com.ddi.streamnews: DEBUG

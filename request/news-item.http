@@ -1,0 +1,29 @@
+### 환경 변수 설정
+@host = http://localhost:8080
+@contentType = application/json
+@accessToken = eyJhbGciOiJIUzM4NCJ9.eyJtZW1iZXJJZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3NDc4NzkwNjgsImV4cCI6MTc0Nzg3OTM2OH0.3pEM6HZW6SqTJUpQdaHXWSxmg3Qvz5a-_rF61ZjH6VLiLOnkXZbJ0olLyokuS4tD
+
+### 뉴스 아이템 전체 수 조회
+GET {{host}}/news-items/count
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 오늘 수집된 뉴스 아이템 수 조회
+GET {{host}}/news-items/count/today
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 뉴스 아이템 목록 조회
+GET {{host}}/news-items
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 뉴스 아이템 목록 필터링 조회
+GET {{host}}/news-items?keywordId=2&sourceId=1&startDate=2025-01-01T00:00:00Z&endDate=2025-05-21T00:00:00Z&page=0&size=20&sort=collectedAt,desc
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 뉴스 아이템 상세 조회
+GET {{host}}/news-items/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}

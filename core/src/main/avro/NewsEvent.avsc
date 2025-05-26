@@ -1,0 +1,44 @@
+{
+  "namespace": "com.ddi.core.dto",
+  "type": "record",
+  "name": "NewsEvent",
+  "fields": [
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "url",
+      "type": "string"
+    },
+    {
+      "name": "content",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "publishedDate",
+      "type": ["null", {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }],
+      "default": null
+    },
+    {
+      "name": "keywordId",
+      "type": "long"
+    },
+    {
+      "name": "sourceId",
+      "type": "long"
+    },
+    {
+      "name": "collectedAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "default": 0
+    }
+  ]
+}

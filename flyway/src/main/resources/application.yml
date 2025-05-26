@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:ddi}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:ddi2505}
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:ddi}
+    user: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:ddi2505}
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 3
+    enabled: true
+    validateOnMigrate: true
+
+server:
+  port: 0

@@ -1,0 +1,36 @@
+### 환경 변수 설정
+@host = http://localhost:8080
+@contentType = application/json
+@accessToken = eyJhbGciOiJIUzM4NCJ9.eyJtZW1iZXJJZCI6MSwidXNlcm5hbWUiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3NDc4MzMzNjQsImV4cCI6MTc0NzgzMzY2NH0.m4cxAz5sZ0iwfe8BoqyAZxgbgNmz8_H743bFHVgavlULaC9ubOnEHFTWqyMmLbSr
+
+### 뉴스 제공처 수 조회
+GET {{host}}/news-source/count
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 뉴스 제공처 목록 조회
+GET {{host}}/news-source
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 뉴스 제공처 생성
+POST {{host}}/news-source
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "name": "경제신문",
+    "url": "https://www.example-economic.com",
+    "code": "MK",
+    "type": "RSS_STATIC"
+}
+
+### 뉴스 제공처 활성화
+PATCH {{host}}/news-source/1/activate
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+### 뉴스 제공처 비활성화
+PATCH {{host}}/news-source/1/deactivate
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
